@@ -1,0 +1,6 @@
+dist/
+data/raw/
+data/cache/
+__pycache__/
+.DS_Store
+.firebase/

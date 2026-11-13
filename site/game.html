@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Faunadle</title>
+  <meta name="description" content="A daily animal-guessing game scored by the tree of life: how many branch points separate your guess from the mystery species, and how long ago they split.">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <h1><a class="home" href="../">Faunadle</a> <span id="game-emoji"></span> <span id="title" class="game-title"></span></h1>
+      <p class="puzzle-meta" id="puzzle-meta"></p>
+    </header>
+
+    <details class="howto">
+      <summary>How to play</summary>
+      <p>Every day there is a mystery <span id="noun">species</span>, one of
+        <span id="species-count"></span> in this game. Guess any species by its common or scientific
+        name. Every guess is placed on the tree of life against the mystery species:</p>
+      <ul>
+        <li><b>Diverged</b>: how long ago your guess and the mystery species shared their last
+          common ancestor (<i>45M</i> = 45 million years, <i>320K</i> = 320,000 years). Smaller is closer.</li>
+        <li><b>Links</b>: how many branch points you pass through on the tree to get from your guess
+          to the mystery species. Sister species are 1 link apart.</li>
+        <li><b>Shared group</b>: the smallest named group (genus, family, order…) that contains both.</li>
+      </ul>
+      <p>Guesses are sorted by divergence time, then links. Tap a guess to see the groups it
+        shares with the mystery species. Hints reveal the order, family, genus, and the first letter
+        of the common name, one at a time.</p>
+    </details>
+
+    <form id="guess-form" class="guess-form" autocomplete="off">
+      <div class="input-wrap">
+        <input id="guess-input" type="text" placeholder="Name a species" aria-label="Your guess"
+          aria-autocomplete="list" aria-controls="suggest" disabled>
+        <ul id="suggest" class="suggest" role="listbox" hidden></ul>
+      </div>
+      <button id="guess-btn" type="submit" disabled>Guess</button>
+    </form>
+    <div id="message" class="message" role="status" aria-live="polite">Loading the tree of life…</div>
+    <ul id="hints" class="hints" hidden></ul>
+
+    <table id="guesses" class="guesses" hidden>
+      <thead>
+        <tr><th class="num">#</th><th>Guess</th><th>Shared group</th>
+          <th class="num" title="Branch points between them (lower is closer)">Links</th>
+          <th class="num" title="Time since their last common ancestor (lower is closer)">Diverged</th>
+          <th>Getting close?</th></tr>
+      </thead>
+      <tbody id="latest"></tbody>
+      <tbody id="sorted"></tbody>
+      <tbody id="explore"></tbody>
+    </table>
+
+    <div class="actions">
+      <button id="practice-btn" type="button" hidden>New random species</button>
+      <button id="hint-btn" class="secondary" type="button" hidden>Hint</button>
+      <button id="giveup-btn" class="secondary" type="button" hidden>Give up</button>
+      <button id="reveal-btn" class="secondary" type="button" hidden>Show answer</button>
+    </div>
+
+    <footer>
+      <p class="footer-links"><a href="../">All games</a> · <a href="?practice">Practice</a></p>
+      <p id="credits-note"></p>
+    </footer>
+  </main>
+
+  <dialog id="result-dialog" class="result">
+    <form method="dialog"><button class="close" aria-label="Close">×</button></form>
+    <div id="result-body"></div>
+  </dialog>
+
+  <script>window.FAUNADLE_GAME = '__GAME__';</script>
+  <script src="../js/config.js"></script>
+  <script src="../data/__GAME__.js"></script>
+  <script src="../js/engine.js"></script>
+  <script src="../js/app.js"></script>
+</body>
+</html>

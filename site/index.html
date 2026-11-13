@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Faunadle</title>
+  <meta name="description" content="Daily animal-guessing games scored by the tree of life.">
+  <meta property="og:title" content="Faunadle">
+  <meta property="og:description" content="Daily animal-guessing games scored by the tree of life.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="wrap">
+    <header><h1>Faunadle</h1></header>
+    <p class="lede">A new mystery species every day in each game. Every guess is scored on the
+      tree of life: how many branch points separate it from the mystery species, and how many
+      years ago they split.</p>
+    <ul id="games" class="games"></ul>
+    <footer><p id="home-credits">Phylogeny from the Open Tree of Life. Dates, names and species
+      lists are credited on each game's page.</p></footer>
+  </main>
+  <script src="js/config.js"></script>
+  <script src="js/engine.js"></script>
+  <script>
+  (function () {
+    'use strict';
+    var cfg = window.FAUNADLE_CONFIG;
+    var num = window.Faunadle.dayNumber(cfg.epoch, new Date());
+    function status(id) {
+      try {
+        var s = JSON.parse(localStorage.getItem('faunadle:' + id + ':p' + num) || 'null');
+        if (!s) return '';
+        if (s.solved) return '✅ solved in ' + s.g.length;
+        if (s.gaveUp) return '🏳️ gave up';
+        return s.g.length ? '⏳ ' + s.g.length + ' guesses so far' : '';
+      } catch (e) { return ''; }
+    }
+    document.getElementById('games').innerHTML = cfg.games.map(function (g) {
+      var inner = '<span class="g-emoji">' + g.emoji + '</span><span class="g-text"><b>' + g.title + '</b>' +
+        '<span class="g-blurb">' + (g.soon ? 'Coming soon' : g.blurb + ' · #' + num) + '</span>' +
+        (g.soon ? '' : '<span class="g-status">' + status(g.id) + '</span>') + '</span>';
+      return '<li class="' + (g.soon ? 'soon' : '') + '">' +
+        (g.soon ? '<div class="card">' + inner + '</div>' : '<a class="card" href="' + g.id + '/">' + inner + '</a>') + '</li>';
+    }).join('');
+  })();
+  </script>
+</body>
+</html>

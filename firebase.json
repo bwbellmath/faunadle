@@ -1,0 +1,14 @@
+{
+  "hosting": {
+    "site": "faunadle-bwb",
+    "public": "dist",
+    "trailingSlash": true,
+    "ignore": ["**/.*"],
+    "headers": [
+      {
+        "source": "/data/**",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600" }]
+      }
+    ]
+  }
+}
